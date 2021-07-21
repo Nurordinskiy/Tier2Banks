@@ -8,6 +8,8 @@ driver=webdriver.Chrome(PATH)
 
 url="https://jysanbank.kz/en/deposit/sandyq-plus"
 url1="https://bank.forte.kz/deposits"
+url2="https://bankffin.kz/ru/deposits/jr/3"
+
 
 # response = requests.get(url).text
 # soup = BeautifulSoup(response, "lxml")
@@ -20,10 +22,18 @@ url1="https://bank.forte.kz/deposits"
 # print(tags.text)
 
 #---
-driver.get(url)
+# driver.get(url)
+# print(driver.title)
+# mian= driver.find_elements_by_class_name("promo-features-item-value-text")
+# print(mian[2].text[-3:])
+# driver.quit()
+#---
+
+#---
+driver.get(url2)
 print(driver.title)
-mian= driver.find_elements_by_class_name("promo-features-item-value-text")
-print(mian[2].text[-3:])
+fred= driver.find_elements_by_class_name("other-percentages")
+print(fred[1].text)
 driver.quit()
 #---
 
@@ -34,3 +44,25 @@ driver.quit()
 # print(elements.text)
 
 # driver.quit()
+
+# req = requests.get(url1)
+# html_text = str(req.content.decode())
+# soup = BeautifulSoup(html_text, 'html.parser')
+# for tag in soup.find_all('td', class_='highlight'):
+#     for t in tag.find_all('table', class_='depositRatesTable__StyledTable-jj2tk2-0 lfwzMN'):
+#         print(tag.text)
+
+# import csv
+# with open("output.csv", "w") as f:
+#     writer = csv.writer(f)
+#     writer.writerows(mian[2].text[-3:])
+
+
+# html = 'https://bankffin.kz/ru/deposits/jr/3'
+# req = requests.get(html)
+# html_text = str(req.content.decode())
+# soup = BeautifulSoup(html_text, 'html.parser')
+
+# for tag in soup.find_all('span'):
+#     for t in tag.find_all('div', class_='other-percentages'):
+#      print(tag[1].text)
