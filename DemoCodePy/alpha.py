@@ -9,6 +9,7 @@ driver=webdriver.Chrome(PATH)
 url="https://jysanbank.kz/en/deposit/sandyq-plus"
 url1="https://bank.forte.kz/deposits"
 url2="https://bankffin.kz/ru/deposits/jr/3"
+url3="https://www.bcc.kz/product/champion/"
 
 
 # response = requests.get(url).text
@@ -22,20 +23,32 @@ url2="https://bankffin.kz/ru/deposits/jr/3"
 # print(tags.text)
 
 #---
-# driver.get(url)
-# print(driver.title)
-# mian= driver.find_elements_by_class_name("promo-features-item-value-text")
-# print(mian[2].text[-3:])
-# driver.quit()
+driver.get(url)
+print(driver.title)
+mian= driver.find_elements_by_class_name("promo-features-item-value-text")
+print(mian[2].text[-3:])
 #---
 
 #---
+data =[]
 driver.get(url2)
 print(driver.title)
-fred= driver.find_elements_by_class_name("other-percentages")
-print(fred[1].text)
+content = driver.page_source
+soup = BeautifulSoup(content,"lxml")
+for a in soup.findAll(attrs={'class':'other-percentages'}):
+    name=a.find('span')
+    data.append(name.text)
+print(data)
+#---
+
+#---
+driver.get(url3)
+print(driver.title)
+bcc= driver.find_element_by_class_name("jq_calc_rate")
+print(bcc.text)
 driver.quit()
 #---
+
 
 # driver.get(url1)
 # print(driver.title)
