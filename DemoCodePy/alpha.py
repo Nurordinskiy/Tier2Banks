@@ -53,11 +53,11 @@ jusan2= driver.find_elements_by_class_name("promo-features-item-value-text")
 print(jusan2[2].text[-4:])
 say3title=driver.title
 say3= jusan2[2].text[-4:]
-with open('parsedBanks.csv', mode='w') as parsBank:
+with open('parsedBanks.csv', mode='a') as parsBank:
     fieldnames = ['bank_name', 'persantage']
     writer = csv.DictWriter(parsBank, fieldnames=fieldnames)
 
-    writer.writeheader()
+    # writer.writeheader()
     writer.writerow({'bank_name': say1title, 'persantage': say1})
     writer.writerow({'bank_name': say2title, 'persantage': say2})
     writer.writerow({'bank_name': say3title, 'persantage': say3})
