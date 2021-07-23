@@ -3,25 +3,69 @@ import requests
 import selenium
 from bs4 import BeautifulSoup
 import pandas as pd
+import csv
+
 
 PATH = "C:\Apps\chromedriver.exe"
 driver=webdriver.Chrome(PATH)
 
 url="https://jysanbank.kz/en/deposit/sandyq-plus"
-url1="https://bank.forte.kz/deposits"
-url2="https://bankffin.kz/ru/deposits/jr/3"
-url3="https://www.bcc.kz/product/champion/"
-url4="https://eubank.kz/deposits/temporary-savings-account-deposit/"
-url5="https://hcsbk.kz/ru/save/deposit-baspana/"
-url6="https://alfabank.kz/persons/deposits/"
-url7="https://www.vtb-bank.kz/individuals/srochnye-vklady/vklad-sberegatelnyy/"
+url01="https://jysanbank.kz/en/deposit/tulpar"
+url02="https://jysanbank.kz/en/deposit/aqyl"
+url03="https://jysanbank.kz/en/deposit/sandyq-plus"
+
+# url1="https://bank.forte.kz/deposits"
+# url2="https://bankffin.kz/ru/deposits/jr/3"
+# url3="https://www.bcc.kz/product/champion/"
+# url4="https://eubank.kz/deposits/temporary-savings-account-deposit/"
+# url5="https://hcsbk.kz/ru/save/deposit-baspana/"
+# url6="https://alfabank.kz/persons/deposits/"
+# url7="https://www.vtb-bank.kz/individuals/srochnye-vklady/vklad-sberegatelnyy/"
+
+
+
+    
+
 
 #---
-# driver.get(url)
-# print(driver.title)
-# mian= driver.find_elements_by_class_name("promo-features-item-value-text")
-# print(mian[2].text[-3:])
+driver.get(url)
+print(driver.title)
+jusan= driver.find_elements_by_class_name("promo-features-item-value-text")
+print(jusan[2].text[-3:])
+say1title=driver.title
+say1=jusan[2].text[-3:]
+
 #---
+
+#---
+driver.get(url01)
+print(driver.title)
+jusan1= driver.find_elements_by_class_name("promo-features-item-value-text")
+print(jusan1[2].text[-4:])
+say2title=driver.title
+say2= jusan1[2].text[-4:]
+#---
+
+#---
+driver.get(url02)
+print(driver.title)
+jusan2= driver.find_elements_by_class_name("promo-features-item-value-text")
+print(jusan2[2].text[-4:])
+say3title=driver.title
+say3= jusan2[2].text[-4:]
+with open('parsedBanks.csv', mode='w') as parsBank:
+    fieldnames = ['bank_name', 'persantage']
+    writer = csv.DictWriter(parsBank, fieldnames=fieldnames)
+
+    writer.writeheader()
+    writer.writerow({'bank_name': say1title, 'persantage': say1})
+    writer.writerow({'bank_name': say2title, 'persantage': say2})
+    writer.writerow({'bank_name': say3title, 'persantage': say3})
+driver.quit()
+#---
+
+
+#------Working Code for future usage------
 
 #---
 # data =[]
@@ -43,32 +87,32 @@ url7="https://www.vtb-bank.kz/individuals/srochnye-vklady/vklad-sberegatelnyy/"
 #---
 
 #---
-driver.get(url4)
-print(driver.title)
-eubank= driver.find_elements_by_class_name("elementor-element-overlay")
-print(eubank[1].text)
+# driver.get(url4)
+# print(driver.title)
+# eubank= driver.find_elements_by_class_name("elementor-element-overlay")
+# print(eubank[1].text)
 #---
 
 #---
-driver.get(url5)
-print(driver.title)
-hcsbk= driver.find_elements_by_class_name("dc-interest-rate")
-print(hcsbk[0].text[:3])
+# driver.get(url5)
+# print(driver.title)
+# hcsbk= driver.find_elements_by_class_name("dc-interest-rate")
+# print(hcsbk[0].text[:3])
 #---
 
 #---
-driver.get(url6)
-print(driver.title)
-alphabank= driver.find_elements_by_class_name("CompactLoanFeatures__title")
-print(alphabank[2].text[-5:])
+# driver.get(url6)
+# print(driver.title)
+# alphabank= driver.find_elements_by_class_name("CompactLoanFeatures__title")
+# print(alphabank[2].text[-5:])
 #---
 
 #---
-driver.get(url7)
-print(driver.title)
-vtb= driver.find_elements_by_class_name("table-wrap")
-print(vtb[1].text[190: -58]+' %')
-driver.quit()
+# driver.get(url7)
+# print(driver.title)
+# vtb= driver.find_elements_by_class_name("table-wrap")
+# print(vtb[1].text[190: -58]+' %')
+# driver.quit()
 #---
 
 

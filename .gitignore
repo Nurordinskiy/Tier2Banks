@@ -1,6 +1,8 @@
 environemnt
 .vscode
 atf_test.txt
+parsedbanks.csv
+testPars
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
