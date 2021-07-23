@@ -1,7 +1,13 @@
 environemnt
 .vscode
+<<<<<<< HEAD
+atf_test.txt
+parsedbanks.csv
+testPars
+=======
 atf-test.txt
 BVU.csv
+>>>>>>> 85728095404b8a8d8c4f5072d553a1c00311cdc8
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
