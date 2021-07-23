@@ -49,3 +49,4 @@ for a in soup.findAll(attrs={'class':'product__data'}):
 
 df = pd.DataFrame({'Дата':data, 'БВУ':bank, 'Депозит':deposit, 'Сроч/несроч': sroch, 'C/без попол.': popol, 'процент':percent}) 
 df.to_csv('BVU.csv', index=False, encoding='utf-8')
+#FORTEBank
