@@ -5,10 +5,9 @@ import pandas as pd
 
 driver = webdriver.Chrome("/usr/local/bin/chromedriver")
 
-driver.get("https://bank.forte.kz/deposits")
 
-driver.maximize_window()
-driver.implicitly_wait(20)
+driver.get("https://bank.forte.kz/deposits")
+#driver.implicitly_wait(20)
 
 content = driver.page_source
 soup = BeautifulSoup(content, "html.parser")
@@ -32,10 +31,8 @@ deposit.append("в приложении")
 sroch.append("срочный")
 popol.append("с пополнениями")
 
-forte = soup.find_all("span", {"class": "MuiTypography-root sc-bdnylx lTPpd MuiTypography-colorInherit"})
-percent.append(forte[0].text)
-
-print(forte)
+forte = soup.find_all("td", "MuiTableCell-root MuiTableCell-body")
+percent.append((forte[10].find('span')).text)
 
 '''
 for a in soup.findAll(attrs={'class':'product__data'}):
