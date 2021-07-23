@@ -12,7 +12,3 @@ for a in soup.findAll(attrs={'class':'product__data'}):
     percent.append(name.text)
 print(percent)
 
-
-driver.get("https://www.vtb-bank.kz/individuals/srochnye-vklady/vklad-sberegatelnyy/")
-percent = []
-vtb=driver.find_element_by_class_name("")
