@@ -18,6 +18,7 @@ url1="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/mobile"
 url11="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/standard"
 url12="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/corporate"
 url13="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/accumulative"
+url2 = "https://kaspi.kz/bank/bpm/products/deposit?startedFrom=main&ap-product=deposit&ae=auth-start,auth-complete"
 
 
 
@@ -95,11 +96,20 @@ sber4= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/
 print(sber4[0].get_attribute('textContent'))
 sber4title=driver.title
 sbData4=sber4[0].get_attribute('textContent')
+#---
+
+#---Kaspi
+driver.get(url2)
+print(driver.title)
+kaspi= driver.find_elements_by_xpath("//*[@id=\"app\"]/div[2]/div[1]/div[2]/div[1]/div[2]")
+print(kaspi[0].get_attribute('textContent')[-2:])
+kaspititle=driver.title
+ksp=kaspi[0].get_attribute('textContent')[-2:]
 with io.open('parsedBanks.csv', mode='a', encoding="utf-8") as parsBank:
     fieldnames = ['bank_name', 'persantage']
     writer = csv.DictWriter(parsBank, fieldnames=fieldnames)
 
-     # writer.writeheader()
+    writer.writeheader()
     writer.writerow({'bank_name': say1title, 'persantage': say1})
     writer.writerow({'bank_name': say2title, 'persantage': say2})
     writer.writerow({'bank_name': say3title, 'persantage': say3})
@@ -107,6 +117,7 @@ with io.open('parsedBanks.csv', mode='a', encoding="utf-8") as parsBank:
     writer.writerow({'bank_name': sber2title, 'persantage': sbData2})
     writer.writerow({'bank_name': sber3title, 'persantage': sbData3})
     writer.writerow({'bank_name': sber4title, 'persantage': sbData4})
+    writer.writerow({'bank_name': kaspititle, 'persantage': ksp})
 driver.quit()
 #---
 
