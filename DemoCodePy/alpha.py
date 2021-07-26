@@ -4,6 +4,7 @@ import selenium
 from bs4 import BeautifulSoup
 import pandas as pd
 import csv
+import io
 
 
 PATH = "C:\Apps\chromedriver.exe"
@@ -13,6 +14,12 @@ url="https://jysanbank.kz/en/deposit/sandyq-plus"
 url01="https://jysanbank.kz/en/deposit/tulpar"
 url02="https://jysanbank.kz/en/deposit/aqyl"
 url03="https://jysanbank.kz/en/deposit/sandyq-plus"
+url1="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/mobile"
+url11="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/standard"
+url12="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/corporate"
+url13="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/accumulative"
+
+
 
 # url1="https://bank.forte.kz/deposits"
 # url2="https://bankffin.kz/ru/deposits/jr/3"
@@ -27,17 +34,16 @@ url03="https://jysanbank.kz/en/deposit/sandyq-plus"
     
 
 
-#---
+#---Jusan
 driver.get(url)
 print(driver.title)
 jusan= driver.find_elements_by_class_name("promo-features-item-value-text")
 print(jusan[2].text[-3:])
 say1title=driver.title
 say1=jusan[2].text[-3:]
-
 #---
 
-#---
+#---Jusan
 driver.get(url01)
 print(driver.title)
 jusan1= driver.find_elements_by_class_name("promo-features-item-value-text")
@@ -46,24 +52,63 @@ say2title=driver.title
 say2= jusan1[2].text[-4:]
 #---
 
-#---
+#---Jusan
 driver.get(url02)
 print(driver.title)
 jusan2= driver.find_elements_by_class_name("promo-features-item-value-text")
 print(jusan2[2].text[-4:])
 say3title=driver.title
 say3= jusan2[2].text[-4:]
-with open('parsedBanks.csv', mode='a') as parsBank:
+#---
+
+#---Sber
+driver.get(url1)
+print(driver.title)
+sber1title=driver.title
+sber1= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[5]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
+print(sber1[0].get_attribute('textContent'))
+sbData1=sber1[0].get_attribute('textContent')[:4]
+#---
+
+#---Sber2
+driver.get(url11)
+print(driver.title)
+sber2= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[5]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
+print(sber2[0].get_attribute('textContent'))
+sber2title=driver.title
+sbData2=sber2[0].get_attribute('textContent')
+#---
+
+#---Sber3
+driver.get(url12)
+print(driver.title)
+sber3= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[4]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
+print(sber3[0].get_attribute('textContent'))
+sber3title=driver.title
+sbData3=sber3[0].get_attribute('textContent')
+#---
+
+#---Sber4
+driver.get(url13)
+print(driver.title)
+sber4= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[5]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
+print(sber4[0].get_attribute('textContent'))
+sber4title=driver.title
+sbData4=sber4[0].get_attribute('textContent')
+with io.open('parsedBanks.csv', mode='a', encoding="utf-8") as parsBank:
     fieldnames = ['bank_name', 'persantage']
     writer = csv.DictWriter(parsBank, fieldnames=fieldnames)
 
-    # writer.writeheader()
+     # writer.writeheader()
     writer.writerow({'bank_name': say1title, 'persantage': say1})
     writer.writerow({'bank_name': say2title, 'persantage': say2})
     writer.writerow({'bank_name': say3title, 'persantage': say3})
+    writer.writerow({'bank_name': sber1title, 'persantage': sbData1})
+    writer.writerow({'bank_name': sber2title, 'persantage': sbData2})
+    writer.writerow({'bank_name': sber3title, 'persantage': sbData3})
+    writer.writerow({'bank_name': sber4title, 'persantage': sbData4})
 driver.quit()
 #---
-
 
 #------Working Code for future usage------
 
