@@ -2,15 +2,10 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 from datetime import date
 import pandas as pd
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 driver = webdriver.Chrome("/usr/local/bin/chromedriver")
-
-
-
-#driver.implicitly_wait(20)
-
-
-
 
 today = date.today() # сегодняшнаяя дата 
 
@@ -67,18 +62,20 @@ percent.append(halyk1.find('div', attrs={'class':'item-num'}).text)
 
 #HALYKBank
 
-'''
-for a in soup.findAll(attrs={'class':'product__data'}):
-
-    data.append(today.strftime("%d/%m/%Y"))
-    bank.append("ForteBank")
-    deposit.append("в приложении")
-    sroch.append("срочный")
-    popol.append("с пополнениями")
-
-    name=a.find('span', attrs={'class':'product__string'})
-    percent.append(name.text)
-'''
 
 df = pd.DataFrame({'Дата':data, 'БВУ':bank, 'Депозит':deposit, 'Сроч/несроч': sroch, 'C/без попол.': popol, 'процент':percent}) 
-df.to_csv('BVU.csv', index=False, encoding='utf-8')
+
+
+# define the scope
+scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+
+# add credentials to the account
+creds = ServiceAccountCredentials.from_json_keyfile_name('key.json', scope)
+
+# authorize the clientsheet 
+client = gspread.authorize(creds)
+
+sheet = client.open("База данных депозитов БВУ РК ")
+sheet_instance = sheet.get_worksheet(1)
+
+sheet_instance.insert_rows(df.values.tolist())
