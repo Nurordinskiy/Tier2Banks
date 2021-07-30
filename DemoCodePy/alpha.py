@@ -5,21 +5,26 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import csv
 import io
+import schedule
+import time
+from datetime import date
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
-
-PATH = "C:\Apps\chromedriver.exe"
-driver=webdriver.Chrome(PATH)
+# PATH = "C:\Apps\chromedriver.exe"
+# driver=webdriver.Chrome(PATH)
+# today = date.today() 
 
 url="https://jysanbank.kz/en/deposit/sandyq-plus"
 url01="https://jysanbank.kz/en/deposit/tulpar"
 url02="https://jysanbank.kz/en/deposit/aqyl"
-url03="https://jysanbank.kz/en/deposit/sandyq-plus"
 url1="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/mobile"
 url11="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/standard"
 url12="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/corporate"
 url13="https://www.sberbank.kz/ru/small_business/sb_deposits/deposits/accumulative"
+url14="https://www.sberbank.kz/ru/corporate_customers/cc_deposits/cc_deposits"
 url2 = "https://kaspi.kz/bank/bpm/products/deposit?startedFrom=main&ap-product=deposit&ae=auth-start,auth-complete"
-
+url3 ="https://www.kdif.kz/bankam/predelnye-stavki-voznagrazhdeniya/"
 
 
 # url1="https://bank.forte.kz/deposits"
@@ -30,96 +35,186 @@ url2 = "https://kaspi.kz/bank/bpm/products/deposit?startedFrom=main&ap-product=d
 # url6="https://alfabank.kz/persons/deposits/"
 # url7="https://www.vtb-bank.kz/individuals/srochnye-vklady/vklad-sberegatelnyy/"
 
+#---
+from time import time, sleep    
+while True:
+    PATH = "C:\Apps\chromedriver.exe"
+    driver=webdriver.Chrome(PATH)
+    today = date.today() # сегодняшнаяя дата 
+    sleep(60 - time() % 60)
+    data=today.strftime("%d/%m/%Y")
 
+    #---Jusan1
+    driver.get(url)
+    print(driver.title)
+    jusan= driver.find_elements_by_class_name("promo-features-item-value-text")
+    print(jusan[2].text[-3:])
+    say1title=driver.find_elements_by_xpath("/html/body/main/div/div/div[1]/div/div/div[1]/div[1]/div")
+    justit1=say1title[0].get_attribute('textContent')
+    say1=jusan[2].text[-3:]
+    #---
+
+    #---Jusan2
+    driver.get(url01)
+    print(driver.title)
+    jusan1= driver.find_elements_by_class_name("promo-features-item-value-text")
+    print(jusan1[2].text[-4:])
+    say2title=driver.find_elements_by_xpath("/html/body/main/div/div/div[1]/div/div/div[1]/div[1]/div")
+    justit2=say2title[0].get_attribute('textContent')
+    say2= jusan1[2].text[-4:]
+    #---
+
+    #---Jusan3
+    driver.get(url02)
+    print(driver.title)
+    jusan2= driver.find_elements_by_class_name("promo-features-item-value-text")
+    print(jusan2[2].text[-4:])
+    say3title=driver.find_elements_by_xpath("/html/body/main/div/div/div[1]/div/div/div[1]/div[1]/div")
+    justit3=say3title[0].get_attribute('textContent')
+    say3= jusan2[2].text[-4:]
+    #---
+
+    #---Sber
+    driver.get(url1)
+    print(driver.title)
+    sber1title=driver.title
+    sber1= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[5]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
+    print(sber1[0].get_attribute('textContent'))
+    sber1title=driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div/div/h1")
+    sbertit1=sber1title[0].get_attribute('textContent')
+    sbData1=sber1[0].get_attribute('textContent')
+    #---
+
+    #---Sber2
+    driver.get(url11)
+    print(driver.title)
+    sber2= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[5]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
+    print(sber2[0].get_attribute('textContent'))
+    sber2title=driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div/div/h1")
+    sbertit2=sber2title[0].get_attribute('textContent')
+    sbData2=sber2[0].get_attribute('textContent')
+    #---
+
+    #---Sber3
+    driver.get(url12)
+    print(driver.title)
+    sber3= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[4]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
+    print(sber3[0].get_attribute('textContent'))
+    sber3title=driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div/div/h1")
+    sbertit3=sber3title[0].get_attribute('textContent')
+    sbData3=sber3[0].get_attribute('textContent')
+    #---
+
+    #---Sber4
+    driver.get(url13)
+    print(driver.title)
+    sber4= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[5]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
+    print(sber4[0].get_attribute('textContent'))
+    sber4title=driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div/div/h1")
+    sbertit4=sber4title[0].get_attribute('textContent')
+    sbData4=sber4[0].get_attribute('textContent')
+    #---
+
+    #---Kaspi
+    driver.get(url2)
+    print(driver.title)
+    kaspi= driver.find_elements_by_xpath("//*[@id=\"app\"]/div[2]/div[1]/div[2]/div[1]/div[2]")
+    print(kaspi[0].get_attribute('textContent')[-2:])
+    kaspitit='Каспи Депозит'
+    ksp=kaspi[0].get_attribute('textContent')[-2:]
 
     
+    #---KFGD1
+    driver.get(url3)
+    print(driver.title)
+    kfgd1= driver.find_elements_by_xpath("/html/body/main/div[2]/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[4]")
+    print(kfgd1[0].get_attribute('textContent')+'%')
+    kfgdper1=kfgd1[0].get_attribute('textContent')+'%'
+    kfgdtitle=driver.title
+    
+    #---
+    #---KFGD2
+    driver.get(url3)
+    print(driver.title)
+    kfgd2= driver.find_elements_by_xpath("/html/body/main/div[2]/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[6]")
+    print(kfgd2[0].get_attribute('textContent')+'%')
+    kfgdper2=kfgd2[0].get_attribute('textContent')+'%'
+    kfgdtitle=driver.title
+    #---
+    #---KFGD3
+    driver.get(url3)
+    print(driver.title)
+    kfgd3= driver.find_elements_by_xpath("/html/body/main/div[2]/div/div/div[2]/div/div[2]/table/tbody/tr[6]/td[4]")
+    print(kfgd3[0].get_attribute('textContent')+'%')
+    kfgdper3=kfgd3[0].get_attribute('textContent')+'%'
+    kfgdtitle=driver.title
+    #---
+    #---KFGD4
+    driver.get(url3)
+    print(driver.title)
+    kfgd4= driver.find_elements_by_xpath("/html/body/main/div[2]/div/div/div[2]/div/div[2]/table/tbody/tr[6]/td[6]")
+    print(kfgd4[0].get_attribute('textContent')+'%')
+    kfgdper4=kfgd4[0].get_attribute('textContent')+'%'
+    kfgdtitle=driver.title
+    #---
+    #---KFGD5
+    driver.get(url3)
+    print(driver.title)
+    kfgd5= driver.find_elements_by_xpath("/html/body/main/div[2]/div/div/div[2]/div/div[2]/table/tbody/tr[11]/td[4]")
+    print(kfgd5[0].get_attribute('textContent')+'%')
+    kfgdper5=kfgd5[0].get_attribute('textContent')+'%'
+    kfgdtitle=driver.title
+    #---
+    #---KFGD6
+    driver.get(url3)
+    print(driver.title)
+    kfgd6= driver.find_elements_by_xpath("/html/body/main/div[2]/div/div/div[2]/div/div[2]/table/tbody/tr[11]/td[6]")
+    print(kfgd6[0].get_attribute('textContent')+'%')
+    kfgdper6=kfgd6[0].get_attribute('textContent')+'%'
+    kfgdtitle=driver.title
+    with io.open('bankBD.csv', mode='a', encoding="utf-8", newline='') as parsBank:
+        fieldnames = ['Дата', 'Банк/КФГД', 'Депозит', 'Тип', 'C/без попол.', 'процент']
+        writer = csv.DictWriter(parsBank, fieldnames=fieldnames)
+
+        # writer.writeheader()
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Jusan Bank','Депозит': justit1.strip(),'Тип': 'сберегательный','C/без попол.': 'без пополнения', 'процент': say1})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Jusan Bank','Депозит': justit2.strip(),'Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': say2})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Jusan Bank','Депозит': justit3.strip(),'Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': say3})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit1.strip(),'Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': sbData1})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit2.strip(),'Тип': 'срочный','C/без попол.': 'без пополнения', 'процент': sbData2})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit3.strip(),'Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': sbData3})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit4.strip(),'Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': sbData4})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Kaspi Bank','Депозит': kaspitit.strip(),'Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': ksp})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Несрочный депозит','Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': kfgdper1})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Несрочный депозит','Тип': 'несрочный','C/без попол.': 'без пополнения',  'процент': kfgdper2})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Срочный депозит','Тип': 'срочный','C/без попол.': 'с пополнениями',  'процент': kfgdper3})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Срочный депозит','Тип': 'срочный','C/без попол.': 'без пополнения',  'процент': kfgdper4})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Сберегательный депозит','Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': kfgdper5})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Сберегательный депозит','Тип': 'сберегательный','C/без попол.': 'без пополнения',  'процент': kfgdper6})
+
+        
+    driver.quit()
+
+    # define the scope
+    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+
+    # add credentials to the account
+    creds = ServiceAccountCredentials.from_json_keyfile_name('key.json', scope)
+
+    # authorize the clientsheet 
+    client = gspread.authorize(creds)
+
+    spreadsheet = client.open("База данных депозитов БВУ РК ")
+
+    with open('bankBD.csv', 'r' , encoding="latin-1") as file_obj:
+        content = file_obj.read()
+        client.import_csv(spreadsheet.id, data=content)
 
 
-#---Jusan
-driver.get(url)
-print(driver.title)
-jusan= driver.find_elements_by_class_name("promo-features-item-value-text")
-print(jusan[2].text[-3:])
-say1title=driver.title
-say1=jusan[2].text[-3:]
-#---
 
-#---Jusan
-driver.get(url01)
-print(driver.title)
-jusan1= driver.find_elements_by_class_name("promo-features-item-value-text")
-print(jusan1[2].text[-4:])
-say2title=driver.title
-say2= jusan1[2].text[-4:]
-#---
+    #---
 
-#---Jusan
-driver.get(url02)
-print(driver.title)
-jusan2= driver.find_elements_by_class_name("promo-features-item-value-text")
-print(jusan2[2].text[-4:])
-say3title=driver.title
-say3= jusan2[2].text[-4:]
-#---
 
-#---Sber
-driver.get(url1)
-print(driver.title)
-sber1title=driver.title
-sber1= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[5]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
-print(sber1[0].get_attribute('textContent'))
-sbData1=sber1[0].get_attribute('textContent')[:4]
-#---
-
-#---Sber2
-driver.get(url11)
-print(driver.title)
-sber2= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[5]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
-print(sber2[0].get_attribute('textContent'))
-sber2title=driver.title
-sbData2=sber2[0].get_attribute('textContent')
-#---
-
-#---Sber3
-driver.get(url12)
-print(driver.title)
-sber3= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[4]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
-print(sber3[0].get_attribute('textContent'))
-sber3title=driver.title
-sbData3=sber3[0].get_attribute('textContent')
-#---
-
-#---Sber4
-driver.get(url13)
-print(driver.title)
-sber4= driver.find_elements_by_xpath("//*[@id=\"main\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/div/div/div/div[5]/div[2]/div/div/div/div[3]/div/div/div/div/table/tbody/tr[2]/td[2]/p")
-print(sber4[0].get_attribute('textContent'))
-sber4title=driver.title
-sbData4=sber4[0].get_attribute('textContent')
-#---
-
-#---Kaspi
-driver.get(url2)
-print(driver.title)
-kaspi= driver.find_elements_by_xpath("//*[@id=\"app\"]/div[2]/div[1]/div[2]/div[1]/div[2]")
-print(kaspi[0].get_attribute('textContent')[-2:])
-kaspititle=driver.title
-ksp=kaspi[0].get_attribute('textContent')[-2:]
-with io.open('parsedBanks.csv', mode='a', encoding="utf-8") as parsBank:
-    fieldnames = ['bank_name', 'persantage']
-    writer = csv.DictWriter(parsBank, fieldnames=fieldnames)
-
-    writer.writeheader()
-    writer.writerow({'bank_name': say1title, 'persantage': say1})
-    writer.writerow({'bank_name': say2title, 'persantage': say2})
-    writer.writerow({'bank_name': say3title, 'persantage': say3})
-    writer.writerow({'bank_name': sber1title, 'persantage': sbData1})
-    writer.writerow({'bank_name': sber2title, 'persantage': sbData2})
-    writer.writerow({'bank_name': sber3title, 'persantage': sbData3})
-    writer.writerow({'bank_name': sber4title, 'persantage': sbData4})
-    writer.writerow({'bank_name': kaspititle, 'persantage': ksp})
-driver.quit()
-#---
 
 #------Working Code for future usage------
 
