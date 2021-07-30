@@ -8,6 +8,8 @@ import io
 import schedule
 import time
 from datetime import date
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 # PATH = "C:\Apps\chromedriver.exe"
 # driver=webdriver.Chrome(PATH)
@@ -170,7 +172,7 @@ while True:
     print(kfgd6[0].get_attribute('textContent')+'%')
     kfgdper6=kfgd6[0].get_attribute('textContent')+'%'
     kfgdtitle=driver.title
-    with io.open('bankBD.csv', mode='a', encoding="utf-8") as parsBank:
+    with io.open('bankBD.csv', mode='a', encoding="utf-8", newline='') as parsBank:
         fieldnames = ['Дата', 'Банк/КФГД', 'Депозит', 'Тип', 'C/без попол.', 'процент']
         writer = csv.DictWriter(parsBank, fieldnames=fieldnames)
 
@@ -189,7 +191,27 @@ while True:
         writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Срочный депозит','Тип': 'срочный','C/без попол.': 'без пополнения',  'процент': kfgdper4})
         writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Сберегательный депозит','Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': kfgdper5})
         writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Сберегательный депозит','Тип': 'сберегательный','C/без попол.': 'без пополнения',  'процент': kfgdper6})
+
+        
     driver.quit()
+
+    # define the scope
+    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+
+    # add credentials to the account
+    creds = ServiceAccountCredentials.from_json_keyfile_name('key.json', scope)
+
+    # authorize the clientsheet 
+    client = gspread.authorize(creds)
+
+    spreadsheet = client.open("База данных депозитов БВУ РК ")
+
+    with open('bankBD.csv', 'r' , encoding="latin-1") as file_obj:
+        content = file_obj.read()
+        client.import_csv(spreadsheet.id, data=content)
+
+
+
     #---
 
 
