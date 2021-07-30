@@ -65,6 +65,7 @@ percent.append(halyk1.find('div', attrs={'class':'item-num'}).text)
 
 df = pd.DataFrame({'Дата':data, 'БВУ':bank, 'Депозит':deposit, 'Сроч/несроч': sroch, 'C/без попол.': popol, 'процент':percent}) 
 
+df.to_csv('BVU.csv', mode='a', header=False, index=False)
 
 # define the scope
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
@@ -76,6 +77,8 @@ creds = ServiceAccountCredentials.from_json_keyfile_name('key.json', scope)
 client = gspread.authorize(creds)
 
 sheet = client.open("База данных депозитов БВУ РК ")
-sheet_instance = sheet.get_worksheet(1)
+sheet_instance = sheet.get_worksheet(0)
 
-sheet_instance.insert_rows(df.values.tolist())
+#sheet_instance.insert_rows(df.values.tolist())
+
+driver.quit()
