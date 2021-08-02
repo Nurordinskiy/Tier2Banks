@@ -41,7 +41,8 @@ while True:
     PATH = "C:\Apps\chromedriver.exe"
     driver=webdriver.Chrome(PATH)
     today = date.today() # сегодняшнаяя дата 
-    sleep(60 - time() % 60)
+    sleep(86400 - time() % 86400)
+    # sleep(60 - time() % 60)
     data=today.strftime("%d/%m/%Y")
 
     #---Jusan1
@@ -172,7 +173,7 @@ while True:
     print(kfgd6[0].get_attribute('textContent')+'%')
     kfgdper6=kfgd6[0].get_attribute('textContent')+'%'
     kfgdtitle=driver.title
-    with io.open('bankBD.csv', mode='a', encoding="utf-8", newline='') as parsBank:
+    with io.open('BVUDB.csv', mode='a', encoding="utf-8", newline='') as parsBank:
         fieldnames = ['Дата', 'Банк/КФГД', 'Депозит', 'Тип', 'C/без попол.', 'процент']
         writer = csv.DictWriter(parsBank, fieldnames=fieldnames)
 
@@ -192,6 +193,72 @@ while True:
         writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Сберегательный депозит','Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': kfgdper5})
         writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Сберегательный депозит','Тип': 'сберегательный','C/без попол.': 'без пополнения',  'процент': kfgdper6})
 
+
+    data = [] # Дата
+    bank = [] # Банк Второго Уровня
+    deposit = [] # название депозита
+    sroch = [] # срочный или несрочный
+    popol = [] # с пополнением или без
+    percent =[] # процент ставки
+
+
+    #FORTEBank
+    driver.get("https://bank.forte.kz/deposits")
+    content = driver.page_source
+    soup = BeautifulSoup(content, "html.parser")
+
+
+    data.append(today.strftime("%d/%m/%Y"))
+    bank.append("ForteBank")
+    deposit.append("в приложении")
+    sroch.append("несрочный")
+    popol.append("с пополнениями")
+
+    forte = soup.find_all("td", "MuiTableCell-root MuiTableCell-body")
+    percent.append((forte[10].find('span')).text)
+    #FORTEBank
+
+
+    #HALYKBank
+    driver.get("https://halykbank.kz/deposit/srochnye-vklady")
+    content = driver.page_source
+    soup = BeautifulSoup(content, "html.parser")
+
+
+    data.append(today.strftime("%d/%m/%Y"))
+    bank.append("HalykBank")
+    deposit.append("Универсальный")
+    sroch.append("несрочный")
+    popol.append("с пополнениями")
+
+    halyk1 = soup.find("div", "swiper-slide swiper-slide-visible swiper-slide-active")
+    percent.append(halyk1.find('div', attrs={'class':'item-num'}).text)
+
+
+    data.append(today.strftime("%d/%m/%Y"))
+    bank.append("HalykBank")
+    deposit.append("Максимальный")
+    sroch.append("сберегательный")
+    popol.append("без пополнения")
+
+    halyk1 = soup.find("div", "swiper-slide swiper-slide-visible swiper-slide-next")
+    percent.append(halyk1.find('div', attrs={'class':'item-num'}).text)
+
+    data.append(today.strftime("%d/%m/%Y"))
+    bank.append("HalykBank")
+    deposit.append("Оптимальный")
+    sroch.append("срочныый")
+    popol.append("с пополнениями")
+
+    halyk1 = soup.find("div", "swiper-slide swiper-slide-visible")
+    percent.append(halyk1.find('div', attrs={'class':'item-num'}).text)
+
+    #HALYKBank
+
+
+    df = pd.DataFrame({'Дата':data, 'БВУ':bank, 'Депозит':deposit, 'Сроч/несроч': sroch, 'C/без попол.': popol, 'процент':percent}) 
+
+    df.to_csv('BVUDB.csv', mode='a', header=False, index=False)
         
     driver.quit()
 
@@ -206,7 +273,7 @@ while True:
 
     spreadsheet = client.open("База данных депозитов БВУ РК ")
 
-    with open('bankBD.csv', 'r' , encoding="latin-1") as file_obj:
+    with open('BVUDB.csv', 'r' , encoding="latin-1") as file_obj:
         content = file_obj.read()
         client.import_csv(spreadsheet.id, data=content)
 

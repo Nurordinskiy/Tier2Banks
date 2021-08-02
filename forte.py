@@ -5,7 +5,7 @@ import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-driver = webdriver.Chrome("/usr/local/bin/chromedriver")
+driver = webdriver.Chrome("C:\Apps\chromedriver.exe")
 
 today = date.today() # сегодняшнаяя дата 
 
@@ -61,6 +61,15 @@ halyk1 = soup.find("div", "swiper-slide swiper-slide-visible swiper-slide-next")
 percent.append(halyk1.find('div', attrs={'class':'item-num'}).text)
 
 #HALYKBank
+
+data.append(today.strftime("%d/%m/%Y"))
+bank.append("HalykBank")
+deposit.append("Оптимальный")
+sroch.append("срочныый")
+popol.append("с пополнениями")
+
+halyk1 = soup.find("div", "swiper-slide swiper-slide-visible")
+percent.append(halyk1.find('div', attrs={'class':'item-num'}).text)
 
 
 df = pd.DataFrame({'Дата':data, 'БВУ':bank, 'Депозит':deposit, 'Сроч/несроч': sroch, 'C/без попол.': popol, 'процент':percent}) 
