@@ -39,10 +39,12 @@ url3 ="https://www.kdif.kz/bankam/predelnye-stavki-voznagrazhdeniya/"
 from time import time, sleep    
 while True:
     PATH = "C:\Apps\chromedriver.exe"
-    driver=webdriver.Chrome(PATH)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--user-agent="Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0"')
+    driver=webdriver.Chrome(PATH, chrome_options=chrome_options)
     today = date.today() # сегодняшнаяя дата 
-    sleep(86400 - time() % 86400)
-    # sleep(60 - time() % 60)
+    # sleep(86400 - time() % 86400)
+    sleep(60 - time() % 60)
     data=today.strftime("%d/%m/%Y")
 
     #---Jusan1
