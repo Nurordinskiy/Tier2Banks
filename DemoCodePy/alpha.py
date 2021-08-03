@@ -1,3 +1,4 @@
+#!python
 from selenium import webdriver
 import requests
 import selenium
@@ -10,6 +11,7 @@ import time
 from datetime import date
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from datetime import datetime
 
 # PATH = "C:\Apps\chromedriver.exe"
 # driver=webdriver.Chrome(PATH)
@@ -38,15 +40,19 @@ url3 ="https://www.kdif.kz/bankam/predelnye-stavki-voznagrazhdeniya/"
 #---
 from time import time, sleep    
 while True:
-    PATH = "C:\Apps\chromedriver.exe"
+    PATH = "C:\Parser2000\chromedriver.exe"
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--user-agent="Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0"')
     driver=webdriver.Chrome(PATH, chrome_options=chrome_options)
     today = date.today() # сегодняшнаяя дата 
+    # sleep(86400)
     # sleep(86400 - time() % 86400)
     sleep(60 - time() % 60)
     data=today.strftime("%d/%m/%Y")
 
+
+
+    
     #---Jusan1
     driver.get(url)
     print(driver.title)
@@ -205,19 +211,25 @@ while True:
 
 
     #FORTEBank
-    driver.get("https://bank.forte.kz/deposits")
-    content = driver.page_source
-    soup = BeautifulSoup(content, "html.parser")
+    while True:
+        try:
+            driver.get("https://bank.forte.kz/deposits")
+            content = driver.page_source
+            soup = BeautifulSoup(content, "html.parser")
 
 
-    data.append(today.strftime("%d/%m/%Y"))
-    bank.append("ForteBank")
-    deposit.append("в приложении")
-    sroch.append("несрочный")
-    popol.append("с пополнениями")
+            data.append(today.strftime("%d/%m/%Y"))
+            bank.append("ForteBank")
+            deposit.append("в приложении")
+            sroch.append("несрочный")
+            popol.append("с пополнениями")
 
-    forte = soup.find_all("td", "MuiTableCell-root MuiTableCell-body")
-    percent.append((forte[10].find('span')).text)
+            forte = soup.find_all("td", "MuiTableCell-root MuiTableCell-body")
+            percent.append((forte[10].find('span')).text)
+            break
+        except:
+            driver.refresh()
+   
     #FORTEBank
 
 
@@ -261,6 +273,11 @@ while True:
     df = pd.DataFrame({'Дата':data, 'БВУ':bank, 'Депозит':deposit, 'Сроч/несроч': sroch, 'C/без попол.': popol, 'процент':percent}) 
 
     df.to_csv('BVUDB.csv', mode='a', header=False, index=False)
+
+    now = datetime.now()
+
+    current_time = now.strftime("%H:%M:%S")
+    print("Current Time =", current_time)
         
     driver.quit()
 
@@ -282,7 +299,6 @@ while True:
 
 
     #---
-
 
 
 #------Working Code for future usage------
