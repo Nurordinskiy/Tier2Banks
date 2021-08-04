@@ -40,7 +40,7 @@ url3 ="https://www.kdif.kz/bankam/predelnye-stavki-voznagrazhdeniya/"
 #---
 from time import time, sleep    
 while True:
-    PATH = "C:\Parser2000\chromedriver.exe"
+    PATH = "C:\Apps\chromedriver.exe"
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--user-agent="Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0"')
     driver=webdriver.Chrome(PATH, chrome_options=chrome_options)
@@ -48,7 +48,7 @@ while True:
     # sleep(86400)
     # sleep(86400 - time() % 86400)
     sleep(60 - time() % 60)
-    data=today.strftime("%d/%m/%Y")
+    data=today.strftime("%m/%d/%y")
 
 
 
@@ -185,6 +185,7 @@ while True:
         fieldnames = ['Дата', 'Банк/КФГД', 'Депозит', 'Тип', 'C/без попол.', 'процент']
         writer = csv.DictWriter(parsBank, fieldnames=fieldnames)
 
+
         # writer.writeheader()
         writer.writerow({'Дата': data,'Банк/КФГД': 'Jusan Bank','Депозит': justit1.strip(),'Тип': 'сберегательный','C/без попол.': 'без пополнения', 'процент': say1})
         writer.writerow({'Дата': data,'Банк/КФГД': 'Jusan Bank','Депозит': justit2.strip(),'Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': say2})
@@ -218,7 +219,7 @@ while True:
             soup = BeautifulSoup(content, "html.parser")
 
 
-            data.append(today.strftime("%d/%m/%Y"))
+            data.append(today.strftime("%m/%d/%y"))
             bank.append("ForteBank")
             deposit.append("в приложении")
             sroch.append("несрочный")
@@ -239,7 +240,7 @@ while True:
     soup = BeautifulSoup(content, "html.parser")
 
 
-    data.append(today.strftime("%d/%m/%Y"))
+    data.append(today.strftime("%m/%d/%y"))
     bank.append("HalykBank")
     deposit.append("Универсальный")
     sroch.append("несрочный")
@@ -249,7 +250,7 @@ while True:
     percent.append(halyk1.find('div', attrs={'class':'item-num'}).text)
 
 
-    data.append(today.strftime("%d/%m/%Y"))
+    data.append(today.strftime("%m/%d/%y"))
     bank.append("HalykBank")
     deposit.append("Максимальный")
     sroch.append("сберегательный")
@@ -258,7 +259,7 @@ while True:
     halyk1 = soup.find("div", "swiper-slide swiper-slide-visible swiper-slide-next")
     percent.append(halyk1.find('div', attrs={'class':'item-num'}).text)
 
-    data.append(today.strftime("%d/%m/%Y"))
+    data.append(today.strftime("%m/%d/%y"))
     bank.append("HalykBank")
     deposit.append("Оптимальный")
     sroch.append("срочныый")
@@ -281,20 +282,20 @@ while True:
         
     driver.quit()
 
-    # define the scope
-    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+    # # define the scope
+    # scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
 
-    # add credentials to the account
-    creds = ServiceAccountCredentials.from_json_keyfile_name('key.json', scope)
+    # # add credentials to the account
+    # creds = ServiceAccountCredentials.from_json_keyfile_name('key.json', scope)
 
-    # authorize the clientsheet 
-    client = gspread.authorize(creds)
+    # # authorize the clientsheet 
+    # client = gspread.authorize(creds)
 
-    spreadsheet = client.open("База данных депозитов БВУ РК ")
+    # spreadsheet = client.open("База данных депозитов БВУ РК ")
 
-    with open('BVUDB.csv', 'r' , encoding="latin-1") as file_obj:
-        content = file_obj.read()
-        client.import_csv(spreadsheet.id, data=content)
+    # with open('BVUDB.csv', 'r' , encoding="latin-1") as file_obj:
+    #     content = file_obj.read()
+    #     client.import_csv(spreadsheet.id, data=content)
 
 
 
