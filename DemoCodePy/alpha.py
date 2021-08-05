@@ -45,10 +45,10 @@ while True:
     chrome_options.add_argument('--user-agent="Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0"')
     driver=webdriver.Chrome(PATH, chrome_options=chrome_options)
     today = date.today() # сегодняшнаяя дата 
-    # sleep(86400)
+    sleep(86400)
     # sleep(86400 - time() % 86400)
-    sleep(60 - time() % 60)
-    data=today.strftime("%m/%d/%y")
+    # sleep(60 - time() % 60)
+    data=today.strftime("%m/%d/%Y")
 
 
 
@@ -185,23 +185,22 @@ while True:
         fieldnames = ['Дата', 'Банк/КФГД', 'Депозит', 'Тип', 'C/без попол.', 'процент']
         writer = csv.DictWriter(parsBank, fieldnames=fieldnames)
 
-
         # writer.writeheader()
-        writer.writerow({'Дата': data,'Банк/КФГД': 'Jusan Bank','Депозит': justit1.strip(),'Тип': 'сберегательный','C/без попол.': 'без пополнения', 'процент': say1})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'Jusan Bank','Депозит': justit2.strip(),'Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': say2})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'Jusan Bank','Депозит': justit3.strip(),'Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': say3})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit1.strip(),'Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': sbData1})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit2.strip(),'Тип': 'срочный','C/без попол.': 'без пополнения', 'процент': sbData2})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit3.strip(),'Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': sbData3})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit4.strip(),'Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': sbData4})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'Kaspi Bank','Депозит': kaspitit.strip(),'Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': ksp})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Несрочный депозит','Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': kfgdper1})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Несрочный депозит','Тип': 'несрочный','C/без попол.': 'без пополнения',  'процент': kfgdper2})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Срочный депозит','Тип': 'срочный','C/без попол.': 'с пополнениями',  'процент': kfgdper3})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Срочный депозит','Тип': 'срочный','C/без попол.': 'без пополнения',  'процент': kfgdper4})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Сберегательный депозит','Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': kfgdper5})
-        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Сберегательный депозит','Тип': 'сберегательный','C/без попол.': 'без пополнения',  'процент': kfgdper6})
-
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Jusan Bank','Депозит': justit1.strip(),'Тип': 'сберегательный','C/без попол.': 'без пополнения', 'процент': say1.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Jusan Bank','Депозит': justit2.strip(),'Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': say2.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Jusan Bank','Депозит': justit3.strip(),'Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': say3.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit1.strip(),'Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': sbData1.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit2.strip(),'Тип': 'срочный','C/без попол.': 'без пополнения', 'процент': sbData2.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit3.strip(),'Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': sbData3.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Sber Bank','Депозит': sbertit4.strip(),'Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': sbData4.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'Kaspi Bank','Депозит': kaspitit.strip(),'Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': ksp.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Несрочный депозит','Тип': 'несрочный','C/без попол.': 'с пополнениями',  'процент': kfgdper1.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Несрочный депозит','Тип': 'несрочный','C/без попол.': 'без пополнения',  'процент': kfgdper2.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Срочный депозит','Тип': 'срочный','C/без попол.': 'с пополнениями',  'процент': kfgdper3.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Срочный депозит','Тип': 'срочный','C/без попол.': 'без пополнения',  'процент': kfgdper4.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Сберегательный депозит','Тип': 'сберегательный','C/без попол.': 'с пополнениями',  'процент': kfgdper5.replace(',','.')})
+        writer.writerow({'Дата': data,'Банк/КФГД': 'КФГД','Депозит': 'Сберегательный депозит','Тип': 'сберегательный','C/без попол.': 'без пополнения',  'процент': kfgdper6.replace(',','.')})
+        
 
     data = [] # Дата
     bank = [] # Банк Второго Уровня
@@ -219,7 +218,7 @@ while True:
             soup = BeautifulSoup(content, "html.parser")
 
 
-            data.append(today.strftime("%m/%d/%y"))
+            data.append(today.strftime("%m/%d/%Y"))
             bank.append("ForteBank")
             deposit.append("в приложении")
             sroch.append("несрочный")
@@ -240,7 +239,7 @@ while True:
     soup = BeautifulSoup(content, "html.parser")
 
 
-    data.append(today.strftime("%m/%d/%y"))
+    data.append(today.strftime("%m/%d/%Y"))
     bank.append("HalykBank")
     deposit.append("Универсальный")
     sroch.append("несрочный")
@@ -250,7 +249,7 @@ while True:
     percent.append(halyk1.find('div', attrs={'class':'item-num'}).text)
 
 
-    data.append(today.strftime("%m/%d/%y"))
+    data.append(today.strftime("%m/%d/%Y"))
     bank.append("HalykBank")
     deposit.append("Максимальный")
     sroch.append("сберегательный")
@@ -259,10 +258,10 @@ while True:
     halyk1 = soup.find("div", "swiper-slide swiper-slide-visible swiper-slide-next")
     percent.append(halyk1.find('div', attrs={'class':'item-num'}).text)
 
-    data.append(today.strftime("%m/%d/%y"))
+    data.append(today.strftime("%m/%d/%Y"))
     bank.append("HalykBank")
     deposit.append("Оптимальный")
-    sroch.append("срочныый")
+    sroch.append("срочный")
     popol.append("с пополнениями")
 
     halyk1 = soup.find("div", "swiper-slide swiper-slide-visible")
@@ -272,6 +271,7 @@ while True:
 
 
     df = pd.DataFrame({'Дата':data, 'БВУ':bank, 'Депозит':deposit, 'Сроч/несроч': sroch, 'C/без попол.': popol, 'процент':percent}) 
+    df["процент"]=df["процент"].str.replace(',','.')
 
     df.to_csv('BVUDB.csv', mode='a', header=False, index=False)
 
@@ -282,20 +282,20 @@ while True:
         
     driver.quit()
 
-    # # define the scope
-    # scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+    # define the scope
+    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
 
-    # # add credentials to the account
-    # creds = ServiceAccountCredentials.from_json_keyfile_name('key.json', scope)
+    # add credentials to the account
+    creds = ServiceAccountCredentials.from_json_keyfile_name('key.json', scope)
 
-    # # authorize the clientsheet 
-    # client = gspread.authorize(creds)
+    # authorize the clientsheet 
+    client = gspread.authorize(creds)
 
-    # spreadsheet = client.open("База данных депозитов БВУ РК ")
+    spreadsheet = client.open("База данных депозитов БВУ РК ")
 
-    # with open('BVUDB.csv', 'r' , encoding="latin-1") as file_obj:
-    #     content = file_obj.read()
-    #     client.import_csv(spreadsheet.id, data=content)
+    with open('BVUDB.csv', 'r' , encoding="latin-1") as file_obj:
+        content = file_obj.read()
+        client.import_csv(spreadsheet.id, data=content)
 
 
 
